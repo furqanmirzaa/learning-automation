@@ -4,14 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "axios": "^1.13.2",
     "express": "^5.2.1",
+    "mailparser": "^3.9.0",
+    "node-imap": "^0.9.6",
     "node-schedule": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/mailparser": "^3.4.6",
+    "@types/node": "^24.10.1",
+    "@types/node-imap": "^0.9.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
   }
 }

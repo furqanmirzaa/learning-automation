@@ -1,12 +1,18 @@
-  {
-    "compilerOptions": {
-      "target": "es2020",
-      "module": "commonjs",
-      "outDir": "./dist",
-      "rootDir": "./src",
-      "esModuleInterop": true,
-      "strict": true
-    },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules"]
-  }
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./",
+    "esModuleInterop": true,
+    "strict": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "worker/**/*.ts",
+    "database/**/*.ts",
+    "config/**/*.ts",
+    "services/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ===============================
+// Email Records
+// ===============================
+model Email {
+  id         String   @id @default(uuid())
+  from       String
+  subject    String?
+  body       String?
+  receivedAt DateTime @default(now())
+
+  // linked jobs
+  jobs          Job[]
+  notifications DiscordNotification[]
+
+  createdAt DateTime @default(now())
+}
+
+// ===============================
+// Discord Notifications
+// ===============================
+model DiscordNotification {
+  id        String             @id @default(uuid())
+  emailId   String? // optional in case of generic notifications
+  content   String
+  status    NotificationStatus @default(PENDING)
+  sentAt    DateTime?
+  error     String?
+  email     Email?             @relation(fields: [emailId], references: [id])
+  createdAt DateTime           @default(now())
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+// ===============================
+// Queue Jobs (Email → Discord)
+// ===============================
+model Job {
+  id       String    @id @default(uuid())
+  type     JobType
+  status   JobStatus @default(PENDING)
+  attempts Int       @default(0)
+  error    String?
+
+  emailId String?
+  email   Email?  @relation(fields: [emailId], references: [id])
+
+  queuedAt    DateTime  @default(now())
+  processedAt DateTime?
+  finishedAt  DateTime?
+}
+
+enum JobType {
+  EMAIL_TO_DISCORD
+}
+
+enum JobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
